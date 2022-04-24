@@ -22,6 +22,7 @@ public class TransactionDaoImpl implements TransactionDao {
         String sql = "INSERT INTO trans (id, actFrom, amount, tType, actTo) values (default, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            System.out.println(transaction.toString());
             preparedStatement.setInt(1, transaction.getActFrom());
             preparedStatement.setDouble(2, transaction.getAmount());
             preparedStatement.setString(3, transaction.getTType());

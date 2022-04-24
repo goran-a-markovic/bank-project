@@ -16,8 +16,10 @@ public class TransactionService {
         String tType = scanner.nextLine();
         System.out.println("Please enter your account number");
         int actFrom = scanner.nextInt();
+        System.out.println(actFrom);
         System.out.println("Please enter who are you sending money to");
         int actTo = scanner.nextInt();
+        System.out.println(actFrom);
         System.out.println("And the amount");
         double amount = scanner.nextDouble();
         Transaction transaction = new Transaction(actFrom, actTo, tType, amount);

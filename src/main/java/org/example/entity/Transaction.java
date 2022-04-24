@@ -15,18 +15,22 @@ public class Transaction {
         this.tType = tType;
         this.amount = amount;
     }
+    public Transaction(int actFrom, int actTo, String tType, double amount) {
+        this.actFrom = actFrom;
+        this.actTo = actTo;
+        this.tType = tType;
+        this.amount = amount;
+    }
 
     //transaction for depositing (pay attention to the order)
-    public Transaction(int id, int actTo, String tType, double amount) {
-        this.id = id;
+    public Transaction(int actTo, String tType, double amount) {
         this.actTo = actTo;
         this.tType = tType;
         this.amount = amount;
     }
 
     //transaction for withdrawing
-    public Transaction(int id, String tType, int actFrom, double amount) {
-        this.id = id;
+    public Transaction(String tType, int actFrom, double amount) {
         this.actFrom = actFrom;
         this.tType = tType;
         this.amount = amount;
@@ -71,5 +75,16 @@ public class Transaction {
 
     public void setTType(String tType) {
         this.tType = tType;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", actFrom=" + actFrom +
+                ", actTo=" + actTo +
+                ", tType='" + tType + '\'' +
+                ", amount=" + amount +
+                '}';
     }
 }
