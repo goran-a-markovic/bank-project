@@ -16,6 +16,13 @@ public class App
 //        CustomerService.insertCustomer();
 //        EmployeeService.insertEmployee();
 //        AccountService.openAccount();
-        TransactionService.insertTransaction();
+//        TransactionService.insertTransaction();
+
+//        EmployeeService.getEmployeeById();
+
+//        CustomerService.deleteCustomer();
+//        CustomerService.getAllCustomers();
+
+        CustomerService.updateCustomer();
     }
 }
