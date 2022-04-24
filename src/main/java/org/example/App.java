@@ -51,6 +51,18 @@ public class App {
                 System.out.println("Please enter the password");
                 String loginPassword = scanner.nextLine();
                 Customer.login(loginName, loginPassword);
+                System.out.println("What now, Einstein?");
+                System.out.println("1 - Apply for an account");
+                System.out.println("2 - Type in your Account number");
+                int custChoice = scanner.nextInt();
+                switch(custChoice) {
+                    case 1:
+                        AccountService.openAccount();
+                        break;
+                    default:
+                        System.out.println("Choose smarter");
+                        break;
+                }
                 break;
             default:
                 System.out.println("Choose smarter");
