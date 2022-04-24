@@ -2,37 +2,39 @@ package org.example.dao;
 
 import org.example.ConnectionFactory;
 import org.example.entity.Account;
-import org.example.entity.User;
+import org.example.entity.Transaction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AccountDaoImpl implements AccountDao {
+public class TransactionDaoImpl implements TransactionDao {
 
     Connection connection;
 
-    public AccountDaoImpl() {
+    public TransactionDaoImpl() {
         connection = ConnectionFactory.getConnection();
     }
 
     @Override
-    public void insert(Account account) {
-        String sql = "INSERT INTO account(actNumber, actType, balance, status, userId) VALUES(default, ?, 100, 'pending', ?);";
+    public void insert(Transaction transaction) {
+        String sql = "INSERT INTO trans (id, actFrom, amount, tType, actTo) values (default, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, account.getActType());
-            preparedStatement.setInt(2, account.getUserId());
+            preparedStatement.setInt(1, transaction.getActFrom());
+            preparedStatement.setDouble(2, transaction.getAmount());
+            preparedStatement.setString(3, transaction.getTType());
+            preparedStatement.setInt(4, transaction.getActTo());
             int count = preparedStatement.executeUpdate();
             if (count == 1) {
-                System.out.println("Account added successfully!");
+                System.out.println("Transaction added successfully!");
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 resultSet.next();
                 int id = resultSet.getInt(1);
                 System.out.println("Generated ID is: " + id);
             } else {
-                System.out.println("Something went wrong when creating an account!");
+                System.out.println("Something went wrong when creating a transaction!");
             }
         } catch (SQLException e) {
             e.printStackTrace();

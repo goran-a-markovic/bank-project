@@ -2,21 +2,21 @@ package org.example.entity;
 
 public class Account {
     private int actNumber;
-    private String type;
+    private String actType;
     private double balance;
     private String status;
     private int userId;
 
-    public Account(int actNumber, String type, double balance, String status, int userId) {
+    public Account(int actNumber, String actType, double balance, String status, int userId) {
         this.actNumber = actNumber;
-        this.type = type;
+        this.actType = actType;
         this.balance = balance;
         this.status = status;
         this.userId = userId;
     }
 
-    public Account(String type, double balance, String status, int userId) {
-        this.type = type;
+    public Account(String actType, double balance, String status, int userId) {
+        this.actType = actType;
         this.balance = balance;
         this.status = status;
         this.userId = userId;
@@ -30,12 +30,12 @@ public class Account {
         this.actNumber = actNumber;
     }
 
-    public String getType() {
-        return type;
+    public String getActType() {
+        return actType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setActType(String actType) {
+        this.actType = actType;
     }
 
     public double getBalance() {
