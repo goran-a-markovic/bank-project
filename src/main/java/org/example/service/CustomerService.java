@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.App;
 import org.example.dao.CustomerDaoImpl;
 import org.example.dao.DaoFactory;
 import org.example.dao.UserDao;
@@ -23,6 +24,11 @@ public class CustomerService {
         System.out.println(customer.getClass());
         customerDao.insert(customer);
     }
+//    public static void insertCustomer(Customer customer) {
+//        UserDao customerDao = DaoFactory.getCustomerDao();
+//        System.out.println(customer.getClass());
+//        customerDao.insert(customer);
+//    }
     public static void getCustomerById() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter the id of the customer");
@@ -31,6 +37,13 @@ public class CustomerService {
         User customer = customerDao.getUserById(id);
         System.out.println("Here is the customer you wanted: " + customer.toString());
     }
+    public static User getCustomerByName(String name) {
+        UserDao customerDao = DaoFactory.getCustomerDao();
+        User customer = customerDao.getUserByName(name);
+        System.out.println("Here is the customer you wanted: " + customer.toString());
+        return customer;
+    }
+
 
     public static void getAllCustomers() {
         System.out.println("All customers:");
@@ -65,4 +78,5 @@ public class CustomerService {
         UserDao customerDao = DaoFactory.getCustomerDao();
         customerDao.delete(id);
     }
+
 }

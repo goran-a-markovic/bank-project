@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.ConnectionFactory;
+import org.example.entity.Customer;
 import org.example.entity.Employee;
 import org.example.entity.User;
 
@@ -48,6 +49,21 @@ public class EmployeeDaoImpl implements UserDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Employee employee = getEmployee(resultSet);
+                return employee;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Employee getUserByName(String name) {
+        String sql = "select * from employee where name = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Employee employee = getEmployee(resultSet);

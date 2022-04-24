@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import org.example.service.CustomerService;
+
 public abstract class User {
     private int id;
     private String name;
@@ -48,4 +50,5 @@ public abstract class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
 }

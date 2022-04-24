@@ -57,12 +57,28 @@ public class CustomerDaoImpl implements UserDao {
         }
         return null;
     }
+    public Customer getUserByName(String name) {
+        String sql = "select * from customer where name = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Customer customer = getCustomer(resultSet);
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Customer getCustomer(ResultSet resultSet) {
         try {
             int idData = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String password = resultSet.getString("password");
+            System.out.println("Usao");
             return new Customer(idData, name, password);
         } catch (SQLException e) {
             e.printStackTrace();
