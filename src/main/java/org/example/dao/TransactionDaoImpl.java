@@ -1,13 +1,14 @@
 package org.example.dao;
 
 import org.example.ConnectionFactory;
-import org.example.entity.Account;
 import org.example.entity.Transaction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionDaoImpl implements TransactionDao {
 
@@ -59,37 +60,38 @@ public class TransactionDaoImpl implements TransactionDao {
 //        return null;
 //    }
 //
-//    @Override
-//    public List<Book> getAllBooks() {
-//        List<Book> books = new ArrayList<Book>();
-//        String sql = "select * from book;";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while(resultSet.next()) {
-//                Book book = getBook(resultSet);
-//                books.add(book);
-//            }
-//            return books;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return books;
-//    }
-//
-//    public Book getBook(ResultSet resultSet) {
-//        try {
-//            int idData = resultSet.getInt("id");
-//            String name = resultSet.getString("name");
-//            String author = resultSet.getString("author");
-//            String description = resultSet.getString("description");
-//            int year = resultSet.getInt("year");
-//            return new Book(idData, name, author, description, year);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } return null;
-//    }
-//
+    @Override
+    public List<Transaction> getAllTransactions() {
+        List<Transaction> transactions = new ArrayList<Transaction>();
+        String sql = "select * from trans;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Transaction transaction = getTransaction(resultSet);
+                transactions.add(transaction);
+            }
+            return transactions;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    @Override
+    public Transaction getTransaction(ResultSet resultSet) {
+        try {
+            int idData = resultSet.getInt("id");
+            int actFrom = resultSet.getInt("actFrom");
+            int actTo = resultSet.getInt("actTo");
+            String tType = resultSet.getString("tType");
+            double amount = resultSet.getDouble("amount");
+            return new Transaction(idData, actFrom, actTo, tType, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } return null;
+    }
+
 //    @Override
 //    public void update(Book book) {
 //        String sql = "update book set name = ?, author = ?, description = ?, year = ? where id = ?;";

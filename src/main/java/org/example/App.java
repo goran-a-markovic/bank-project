@@ -4,6 +4,7 @@ import org.example.dao.AccountDaoImpl;
 import org.example.dao.DaoFactory;
 import org.example.dao.UserDao;
 import org.example.entity.Customer;
+import org.example.entity.Employee;
 import org.example.entity.User;
 import org.example.service.AccountService;
 import org.example.service.CustomerService;
@@ -19,6 +20,7 @@ import java.util.Scanner;
 public class App {
     public static boolean loggedIn = false;
     public static int currentUserId;
+    public static int currentEmpId;
 
     public static void main( String[] args ) {
 //        CustomerService.insertCustomer();
@@ -39,7 +41,9 @@ public class App {
         System.out.println("2 - Customer login");
         System.out.println("3 - Employee Login");
         int choice = scanner.nextInt();
+        boolean flag = true;
 
+        while (flag) {
         switch(choice) {
             case 1:
                 CustomerService.insertCustomer();
@@ -59,6 +63,43 @@ public class App {
                     case 1:
                         AccountService.openAccount();
                         break;
+                    case 2:
+                        int actTyped = scanner.nextInt();
+
+                        break;
+                    default:
+                        System.out.println("Choose smarter");
+                        break;
+                }
+                break;
+            case 3:
+                System.out.println("Please enter your name");
+                scanner.nextLine();
+                String empName = scanner.nextLine();
+                System.out.println("Please enter your password");
+                String empPassword = scanner.nextLine();
+                Employee.login(empName, empPassword);
+                System.out.println("What now, Einstein?");
+                System.out.println("1 - View an account");
+                System.out.println("2 - Approve an account");
+                System.out.println("3 - See transactions log");
+                System.out.println("4 - Log out");
+                int empChoice = scanner.nextInt();
+                switch(empChoice) {
+                    case 1:
+                        AccountService.getAccountByNumber();
+                        break;
+                    case 2:
+                        AccountService.getPendingAccounts();
+                        AccountService.approveAccount();
+                        break;
+                    case 3:
+                        TransactionService.getAllTransactions();
+                        break;
+                    case 4:
+                        flag = false;
+                        currentEmpId = 0;
+                        break;
                     default:
                         System.out.println("Choose smarter");
                         break;
@@ -67,6 +108,8 @@ public class App {
             default:
                 System.out.println("Choose smarter");
                 break;
+        }
+
         }
     }
 }

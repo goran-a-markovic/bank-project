@@ -3,9 +3,12 @@ package org.example.service;
 import org.example.dao.AccountDao;
 import org.example.dao.DaoFactory;
 import org.example.dao.TransactionDao;
+import org.example.dao.UserDao;
 import org.example.entity.Account;
 import org.example.entity.Transaction;
+import org.example.entity.User;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class TransactionService {
@@ -27,5 +30,14 @@ public class TransactionService {
         TransactionDao transactionDao = DaoFactory.getTransactionDao();
         System.out.println(transaction.getClass());
         transactionDao.insert(transaction);
+    }
+
+    public static void getAllTransactions() {
+        System.out.println("Log of all transactions:");
+        TransactionDao transactionDao = DaoFactory.getTransactionDao();
+        List<Transaction> transactions = transactionDao.getAllTransactions();
+        for(Transaction transaction : transactions) {
+            System.out.println(transaction);
+        }
     }
 }

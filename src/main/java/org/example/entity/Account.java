@@ -61,4 +61,15 @@ public class Account {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "actNumber=" + actNumber +
+                ", actType='" + actType + '\'' +
+                ", balance=" + balance +
+                ", status='" + status + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

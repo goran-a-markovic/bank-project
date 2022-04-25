@@ -33,6 +33,14 @@ public class EmployeeService {
         System.out.println("Here is the employee you wanted: " + employee.toString());
     }
 
+    public static User getEmployeeByName(String name) {
+        UserDao employeeDao = DaoFactory.getEmployeeDao();
+        User employee = employeeDao.getUserByName(name);
+        System.out.println("Here is the employee you wanted: " + employee.toString());
+        return employee;
+    }
+
+
     public static void getAllEmployees() {
         System.out.println("You don't really need this method :D ");
     }

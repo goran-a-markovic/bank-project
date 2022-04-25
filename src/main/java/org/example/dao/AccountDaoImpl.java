@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDaoImpl implements AccountDao {
 
@@ -39,22 +41,22 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 //
-//    @Override
-//    public Book getBookById(int id) {
-//        String sql = "select * from book where id = ?;";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                Book book = getBook(resultSet);
-//                return book;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @Override
+    public Account getAccountByNumber(int actNumber){
+        String sql = "select * from account where actNumber = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, actNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Account account = getAccount(resultSet);
+                return account;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 //
 //    @Override
 //    public List<Book> getAllBooks() {
@@ -73,19 +75,52 @@ public class AccountDaoImpl implements AccountDao {
 //        }
 //        return books;
 //    }
+
+
+    public List<Account> getPendingAccounts() {
+        List<Account> accounts = new ArrayList<Account>();
+        String sql = "select * from account where status = 'pending';";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Account account = getAccount(resultSet);
+                accounts.add(account);
+            }
+            return accounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
+    @Override
+    public void approveAccount(int actNumber, String decision) {
+        String sql = "update account set status = ? where actNumber = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, decision);
+            preparedStatement.setInt(2, actNumber);
+            int count = preparedStatement.executeUpdate();
+            if (count == 1) System.out.println("Update successful!");
+            else System.out.println("Something went wrong with the update");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 //
-//    public Book getBook(ResultSet resultSet) {
-//        try {
-//            int idData = resultSet.getInt("id");
-//            String name = resultSet.getString("name");
-//            String author = resultSet.getString("author");
-//            String description = resultSet.getString("description");
-//            int year = resultSet.getInt("year");
-//            return new Book(idData, name, author, description, year);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } return null;
-//    }
+    public Account getAccount(ResultSet resultSet) {
+        try {
+            int actNumber = resultSet.getInt("actNumber");
+            String actType = resultSet.getString("actType");
+            double balance = resultSet.getDouble("balance");
+            String status = resultSet.getString("status");
+            int userId = resultSet.getInt("userId");
+            return new Account(actNumber, actType, balance, status, userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } return null;
+    }
 //
 //    @Override
 //    public void update(Book book) {
