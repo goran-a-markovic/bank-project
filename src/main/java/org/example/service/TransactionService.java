@@ -49,13 +49,13 @@ public class TransactionService {
             for (Transaction transaction : transactions) {
                 System.out.println("ID of the transaction: " + transaction.getId() + "; Account number from: " + transaction.getActFrom() + "; Amount: " + transaction.getAmount());
             }
-            TransactionService.approveTransaction();
+            TransactionService.approveTransaction(actNumber);
         } else {
-            System.out.println("There is no pending transaction at the moment");
+            System.out.println("There is no pending transaction at the moment\n");
         }
     }
 
-    public static void approveTransaction() {
+    public static void approveTransaction(int actNumber) {
         Scanner scanner = new Scanner(System.in);
         Scanner scannerInt = new Scanner(System.in);
 
@@ -65,5 +65,13 @@ public class TransactionService {
         String decision = scanner.nextLine();
         TransactionDao transactionDao = DaoFactory.getTransactionDao();
         transactionDao.approveTransaction(id, decision);
+        if (decision.equals("approved")) {
+            System.out.println("He approved, I'm coming in");
+            AccountDao accountDao = DaoFactory.getAccountDao();
+            Account account = accountDao.getAccountByNumber(actNumber);
+            Transaction t = transactionDao.getTransactionById(id);
+            double newBalance = account.getBalance() + t.getAmount();
+            transactionDao.setNewBalance(newBalance, actNumber);
+        }
     }
 }

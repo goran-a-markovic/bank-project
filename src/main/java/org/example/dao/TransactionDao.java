@@ -9,6 +9,9 @@ public interface TransactionDao {
 
     public void insert(Transaction transaction);
 
+    //
+    Transaction getTransactionById(int id);
+
     List<Transaction> getAllTransactions();
 
     public Transaction getTransaction(ResultSet resultSet);
@@ -16,6 +19,9 @@ public interface TransactionDao {
     List<Transaction> getPendingTransactions(int actNumber);
 
     void approveTransaction(int id, String decision);
+
+    void setNewBalance(double newBalance, int actNumber);
+
 
     //
     //    @Override

@@ -50,6 +50,7 @@ public class App {
                 case 1:
                     CustomerService.insertCustomer();
                 case 2: //customer options
+                    System.out.println("Log In");
                     System.out.println("Please enter the name of the user");
                     scanner.nextLine();
                     String loginName = scanner.nextLine();
@@ -77,7 +78,7 @@ public class App {
 
                                 System.out.println("What is the account number you want to withdraw from?");
                                 int actToWithdraw = scanner.nextInt();
-                                System.out.println("How much money, sir?");
+                                System.out.println("How much money would you like to withdraw?");
                                 double amtToWithdraw = scanner.nextDouble();
                                 CustomerService.withdraw(actToWithdraw, amtToWithdraw);
                                 break;
@@ -85,7 +86,7 @@ public class App {
                                 AccountService.getCustomersAccounts(App.currentUserId);
                                 System.out.println("What is the account number you want to deposit to?");
                                 int actToDeposit = scanner.nextInt();
-                                System.out.println("How much money, sir?");
+                                System.out.println("How much money would you like to deposit?");
                                 double amtToDeposit = scanner.nextDouble();
                                 CustomerService.deposit(actToDeposit, amtToDeposit);
                                 break;

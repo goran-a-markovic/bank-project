@@ -90,6 +90,7 @@ public class CustomerService {
             Account a = accountDao.getAccountByNumber(actTo);
             double newBalance = a.getBalance() + amount;
             a.setBalance(newBalance);
+            System.out.println("Your balance now is: " + a.getBalance());
             accountDao.update(a);
         } else {
             System.out.println("You can't deposit negative amount");
@@ -99,6 +100,8 @@ public class CustomerService {
     public static void withdraw(int actFrom, double amount) {
         AccountDao accountDao = DaoFactory.getAccountDao();
         Account a = accountDao.getAccountByNumber(actFrom);
+        if (a != null) {
+
         if (amount < a.getBalance()) {
             Transaction t = new Transaction("withdraw", actFrom, amount, "approved");
             TransactionDao transactionDao = DaoFactory.getTransactionDao();
@@ -109,6 +112,9 @@ public class CustomerService {
             accountDao.update(a);
         } else {
             System.out.println("No wherewithal, buddy\n");
+        }
+        } else {
+            System.out.println("Wrong account number");
         }
     }
 
@@ -123,11 +129,8 @@ public class CustomerService {
             transactionDao.insert(t);
 
             double newBalanceFrom = a.getBalance() - amount;
-            double newBalanceTo = b.getBalance() + amount;
             a.setBalance(newBalanceFrom);
-            b.setBalance(newBalanceTo);
             accountDao.update(a);
-            accountDao.update(b);
             System.out.println(amount + " transferred to account " + actTo + "\n");
         } else {
             System.out.println("No wherewithal, buddy\n");

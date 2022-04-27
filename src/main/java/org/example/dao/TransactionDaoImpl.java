@@ -1,7 +1,6 @@
 package org.example.dao;
 
 import org.example.ConnectionFactory;
-import org.example.entity.Account;
 import org.example.entity.Transaction;
 
 import java.sql.Connection;
@@ -42,22 +41,22 @@ public class TransactionDaoImpl implements TransactionDao {
         }
     }
 //
-//    @Override
-//    public Book getBookById(int id) {
-//        String sql = "select * from book where id = ?;";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                Book book = getBook(resultSet);
-//                return book;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @Override
+    public Transaction getTransactionById(int id) {
+        String sql = "select * from trans where id = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Transaction transaction = getTransaction(resultSet);
+                return transaction;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 //
     @Override
     public List<Transaction> getAllTransactions() {
@@ -118,6 +117,21 @@ public class TransactionDaoImpl implements TransactionDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, decision);
             preparedStatement.setInt(2, id);
+            int count = preparedStatement.executeUpdate();
+            if (count == 1) System.out.println("Update successful!");
+            else System.out.println("Something went wrong with the update");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setNewBalance(double newBalance, int actNumber) {
+        String sql = "update account set balance = ? where actNumber = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, actNumber);
             int count = preparedStatement.executeUpdate();
             if (count == 1) System.out.println("Update successful!");
             else System.out.println("Something went wrong with the update");

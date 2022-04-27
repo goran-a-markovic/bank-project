@@ -42,6 +42,11 @@ public class AccountService {
         System.out.println("The balance is: " + account.getBalance() + "\n");
     }
 
+    public static void getAccountByNumber(int actNumber) {
+        AccountDao accountDao = DaoFactory.getAccountDao();
+        Account account = accountDao.getAccountByNumber(actNumber);
+    }
+
     public static void getAllAccounts() {
         System.out.println("Here are all of the accounts:");
         AccountDao accountDao = DaoFactory.getAccountDao();
