@@ -2,7 +2,6 @@ package org.example.dao;
 
 import org.example.ConnectionFactory;
 import org.example.entity.Account;
-import org.example.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,11 +27,11 @@ public class AccountDaoImpl implements AccountDao {
             preparedStatement.setInt(2, account.getUserId());
             int count = preparedStatement.executeUpdate();
             if (count == 1) {
-                System.out.println("Account added successfully!");
+                System.out.println("Account opened successfully!");
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 resultSet.next();
-                int id = resultSet.getInt(1);
-                System.out.println("Generated ID is: " + id);
+                int actNumber = resultSet.getInt(1);
+                System.out.println("Your new account number is: " + actNumber);
             } else {
                 System.out.println("Something went wrong when creating an account!");
             }
@@ -57,31 +56,49 @@ public class AccountDaoImpl implements AccountDao {
         }
         return null;
     }
-//
-//    @Override
-//    public List<Book> getAllBooks() {
-//        List<Book> books = new ArrayList<Book>();
-//        String sql = "select * from book;";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while(resultSet.next()) {
-//                Book book = getBook(resultSet);
-//                books.add(book);
-//            }
-//            return books;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return books;
-//    }
 
-
+    @Override
+    public List<Account> getAllAccounts() {
+        List<Account> accounts = new ArrayList<Account>();
+        String sql = "select * from account;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Account account = getAccount(resultSet);
+                accounts.add(account);
+            }
+            return accounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+    @Override
     public List<Account> getPendingAccounts() {
         List<Account> accounts = new ArrayList<Account>();
         String sql = "select * from account where status = 'pending';";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Account account = getAccount(resultSet);
+                accounts.add(account);
+            }
+            return accounts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
+    @Override
+    public List<Account> getCustomersAccounts(int userId) {
+        List<Account> accounts = new ArrayList<Account>();
+        String sql = "select * from account where userId = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Account account = getAccount(resultSet);
@@ -108,6 +125,8 @@ public class AccountDaoImpl implements AccountDao {
             e.printStackTrace();
         }
     }
+
+
 //
     public Account getAccount(ResultSet resultSet) {
         try {
@@ -122,23 +141,23 @@ public class AccountDaoImpl implements AccountDao {
         } return null;
     }
 //
-//    @Override
-//    public void update(Book book) {
-//        String sql = "update book set name = ?, author = ?, description = ?, year = ? where id = ?;";
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1, book.getName());
-//            preparedStatement.setString(2, book.getAuthor());
-//            preparedStatement.setString(3, book.getDescription());
-//            preparedStatement.setInt(4, book.getYear());
-//            preparedStatement.setInt(5, book.getId());
-//            int count = preparedStatement.executeUpdate();
-//            if (count == 1) System.out.println("Update successful!");
-//            else System.out.println("Something went wrong with the update");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    public void update(Account account) {
+        String sql = "update account set balance = ? where actNumber = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setDouble(1, account.getBalance());
+            preparedStatement.setInt(2, account.getActNumber());
+            int count = preparedStatement.executeUpdate();
+            if (count == 1) {
+                System.out.println("Update successful!\n");
+            }
+            else System.out.println("Something went wrong with the update\n");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 //
 //    @Override
 //    public void delete(int id) {

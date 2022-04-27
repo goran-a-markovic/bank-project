@@ -15,10 +15,19 @@ public class Employee extends User {
 
     public static void login(String name, String password) {
         User goal = EmployeeService.getEmployeeByName(name);
-        if (goal.getPassword().equals(password)) {
-            App.currentEmpId = goal.getId();
-            System.out.println("Logged in successfully");
+        if (goal != null) {
+            if (goal.getPassword().equals(password)) {
+                App.currentEmpId = goal.getId();
+                System.out.println("Logged in successfully");
+            } else {
+                System.out.println("Your password is wrong, sir");
+                App.flag = false;
+                App.flagEmp = false;
+            }
+        } else {
+            System.out.println("No employees with that name");
+            App.flag = false;
+            App.flagEmp = false;
         }
-        System.out.println("Current ID - " + App.currentEmpId);
     }
 }

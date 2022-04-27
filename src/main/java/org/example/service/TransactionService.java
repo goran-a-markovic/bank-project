@@ -25,10 +25,10 @@ public class TransactionService {
         System.out.println(actFrom);
         System.out.println("And the amount");
         double amount = scanner.nextDouble();
-        Transaction transaction = new Transaction(actFrom, actTo, tType, amount);
+        String status = "pending";
+        Transaction transaction = new Transaction(actFrom, actTo, tType, amount, status);
 
         TransactionDao transactionDao = DaoFactory.getTransactionDao();
-        System.out.println(transaction.getClass());
         transactionDao.insert(transaction);
     }
 
@@ -39,5 +39,31 @@ public class TransactionService {
         for(Transaction transaction : transactions) {
             System.out.println(transaction);
         }
+    }
+
+    public static void getPendingTransactions(int actNumber) {
+        TransactionDao transactionDao = DaoFactory.getTransactionDao();
+        List<Transaction> transactions = transactionDao.getPendingTransactions(actNumber);
+        if (!transactions.isEmpty()) {
+            System.out.println("Here are all of yours pending transactions:");
+            for (Transaction transaction : transactions) {
+                System.out.println("ID of the transaction: " + transaction.getId() + "; Account number from: " + transaction.getActFrom() + "; Amount: " + transaction.getAmount());
+            }
+            TransactionService.approveTransaction();
+        } else {
+            System.out.println("There is no pending transaction at the moment");
+        }
+    }
+
+    public static void approveTransaction() {
+        Scanner scanner = new Scanner(System.in);
+        Scanner scannerInt = new Scanner(System.in);
+
+        System.out.println("What is the ID of the transaction you would like to approve?");
+        int id = scannerInt.nextInt();
+        System.out.println("Do you want to approve or reject?");
+        String decision = scanner.nextLine();
+        TransactionDao transactionDao = DaoFactory.getTransactionDao();
+        transactionDao.approveTransaction(id, decision);
     }
 }

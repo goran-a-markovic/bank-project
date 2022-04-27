@@ -16,14 +16,22 @@ public class Customer extends User {
 
     public static void login(String name, String password) {
         User goal = CustomerService.getCustomerByName(name);
-        System.out.println(goal.getPassword());
-        System.out.println(password);
-        if (goal.getPassword().equals(password)) {
-            App.loggedIn = true;
-            App.currentUserId = goal.getId();
-            System.out.println("Logged in successfully");
+        if (goal != null) {
+            if (goal.getPassword().equals(password)) {
+                App.loggedIn = true;
+                App.flagUser = true;
+                App.currentUserId = goal.getId();
+                System.out.println("Logged in successfully");
+                System.out.println("The customer just logged in: " + goal.getId() + " " + goal.getName());
+            } else {
+                System.out.println("Your password is wrong, sir");
+                App.flag = false;
+                App.flagUser = false;
+            }
+        } else {
+            System.out.println("No customers with that name");
+            App.flag = false;
+            App.flagUser = false;
         }
-        System.out.println("Logged in - " + App.loggedIn);
-        System.out.println("Current ID - " + App.currentUserId);
     }
 }

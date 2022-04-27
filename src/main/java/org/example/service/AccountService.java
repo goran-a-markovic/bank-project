@@ -24,12 +24,12 @@ public class AccountService {
         } else {
             userId = App.currentUserId;
         }
-        System.out.println("You need 100usd to start with");
+        System.out.println("You need 100 usd to start with");
         Account account = new Account(actType, 100, "pending", userId);
 
         AccountDao accountDao = DaoFactory.getAccountDao();
-        System.out.println(account.getClass());
         accountDao.insert(account);
+        System.out.println("Your account needs to get approved. It usually takes less than a minute. Please come back later.");
     }
 
     public static void getAccountByNumber() {
@@ -38,16 +38,43 @@ public class AccountService {
         int actNumber = scanner.nextInt();
         AccountDao accountDao = DaoFactory.getAccountDao();
         Account account = accountDao.getAccountByNumber(actNumber);
-        System.out.println("Here is the account you wanted: " + account.toString());
+        System.out.println("The owner's ID is: " + account.getUserId());
+        System.out.println("The balance is: " + account.getBalance() + "\n");
+    }
+
+    public static void getAllAccounts() {
+        System.out.println("Here are all of the accounts:");
+        AccountDao accountDao = DaoFactory.getAccountDao();
+        List<Account> accounts = accountDao.getAllAccounts();
+        for (Account account : accounts) {
+            System.out.println("Account number - " + account.getActNumber() + "\n");
+        }
     }
 
     public static void getPendingAccounts() {
-        System.out.println("Here are all of the pending accounts:");
         AccountDao accountDao = DaoFactory.getAccountDao();
         List<Account> accounts = accountDao.getPendingAccounts();
-        for(Account account : accounts) {
-            System.out.println(account);
+        if (!accounts.isEmpty()) {
+            System.out.println("Here are all of the pending accounts:");
+            for (Account account : accounts) {
+                System.out.println("Account number: " + account.getActNumber() + "; Owner ID: " + account.getUserId()+ "\n");
+            }
+            AccountService.approveAccount();
+        } else {
+            System.out.println("There is no pending accounts at the moment" + "\n");
         }
+    }
+
+    public static void getCustomersAccounts(int userId) {
+        System.out.println("Here are all of your accounts:");
+        AccountDao accountDao = DaoFactory.getAccountDao();
+        List<Account> accounts = accountDao.getCustomersAccounts(userId);
+        for (Account account : accounts) {
+            System.out.println("Account number - " + account.getActNumber());
+            System.out.println("Status - " + account.getStatus());
+            System.out.println("Balance - " + account.getBalance() + "\r\n");
+        }
+        System.out.println("You can only use the ones that are approved.");
     }
 
     public static void approveAccount() {
@@ -61,4 +88,6 @@ public class AccountService {
         AccountDao accountDao = DaoFactory.getAccountDao();
         accountDao.approveAccount(actNumber, decision);
     }
+
+
 }

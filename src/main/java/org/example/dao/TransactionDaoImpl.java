@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.ConnectionFactory;
+import org.example.entity.Account;
 import org.example.entity.Transaction;
 
 import java.sql.Connection;
@@ -20,23 +21,21 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public void insert(Transaction transaction) {
-        String sql = "INSERT INTO trans (id, actFrom, amount, tType, actTo) values (default, ?, ?, ?, ?);";
+        String sql = "INSERT INTO trans (id, actFrom, amount, tType, actTo, status) values (default, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            System.out.println(transaction.toString());
             preparedStatement.setInt(1, transaction.getActFrom());
             preparedStatement.setDouble(2, transaction.getAmount());
             preparedStatement.setString(3, transaction.getTType());
-            preparedStatement.setInt(4, transaction.getActTo());
+            preparedStatement.setInt(4, transaction.getActTo());;
+            preparedStatement.setString(5, transaction.getStatus());
             int count = preparedStatement.executeUpdate();
             if (count == 1) {
-                System.out.println("Transaction added successfully!");
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 resultSet.next();
                 int id = resultSet.getInt(1);
-                System.out.println("Generated ID is: " + id);
             } else {
-                System.out.println("Something went wrong when creating a transaction!");
+                System.out.println("Something went wrong when running your transaction!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,11 +85,47 @@ public class TransactionDaoImpl implements TransactionDao {
             int actTo = resultSet.getInt("actTo");
             String tType = resultSet.getString("tType");
             double amount = resultSet.getDouble("amount");
-            return new Transaction(idData, actFrom, actTo, tType, amount);
+            String status = resultSet.getString("status");
+            return new Transaction(idData, actFrom, actTo, tType, amount, status);
         } catch (SQLException e) {
             e.printStackTrace();
         } return null;
     }
+
+    @Override
+    public List<Transaction> getPendingTransactions(int actNumber) {
+        List<Transaction> transactions = new ArrayList<Transaction>();
+        String sql = "select * from trans where status = 'pending' and actTo = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, actNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Transaction transaction = getTransaction(resultSet);
+                transactions.add(transaction);
+            }
+            return transactions;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transactions;
+    }
+
+    @Override
+    public void approveTransaction(int id, String decision) {
+        String sql = "update trans set status = ? where id = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, decision);
+            preparedStatement.setInt(2, id);
+            int count = preparedStatement.executeUpdate();
+            if (count == 1) System.out.println("Update successful!");
+            else System.out.println("Something went wrong with the update");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 //    @Override
 //    public void update(Book book) {
@@ -119,6 +154,21 @@ public class TransactionDaoImpl implements TransactionDao {
 //            int count = preparedStatement.executeUpdate();
 //            if (count == 1) System.out.println("Delete successful!");
 //            else System.out.println("Something went wrong with the deletion");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    //    @Override
+//    public void depositToA(int actNumber, String decision) {
+//        String sql = "update account set status = ? where actNumber = ?;";
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setString(1, decision);
+//            preparedStatement.setInt(2, actNumber);
+//            int count = preparedStatement.executeUpdate();
+//            if (count == 1) System.out.println("Update successful!");
+//            else System.out.println("Something went wrong with the update");
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }

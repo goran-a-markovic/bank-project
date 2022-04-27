@@ -6,34 +6,42 @@ public class Transaction {
     private int actTo;
     private String tType;
     private double amount;
+    private String status;
 
-    //transaction for a regular transfer
-    public Transaction(int id, int actFrom, int actTo, String tType, double amount) {
+    public Transaction(int id, int actFrom, int actTo, String tType, double amount, String status) {
         this.id = id;
         this.actFrom = actFrom;
         this.actTo = actTo;
         this.tType = tType;
         this.amount = amount;
+        this.status = status;
     }
-    public Transaction(int actFrom, int actTo, String tType, double amount) {
+
+    //transaction for a regular transfer
+    public Transaction(int actFrom, int actTo, String tType, double amount, String status) {
         this.actFrom = actFrom;
         this.actTo = actTo;
         this.tType = tType;
         this.amount = amount;
+        this.status = status;
     }
 
     //transaction for depositing (pay attention to the order)
-    public Transaction(int actTo, String tType, double amount) {
+    public Transaction(int actTo, String tType, double amount, String status) {
         this.actTo = actTo;
         this.tType = tType;
         this.amount = amount;
+        this.actFrom = actTo;
+        this.status = status;
     }
 
     //transaction for withdrawing
-    public Transaction(String tType, int actFrom, double amount) {
+    public Transaction(String tType, int actFrom, double amount, String status) {
         this.actFrom = actFrom;
         this.tType = tType;
         this.amount = amount;
+        this.actTo = actFrom;
+        this.status = status;
     }
 
 
@@ -77,6 +85,13 @@ public class Transaction {
         this.tType = tType;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     @Override
     public String toString() {
         return "Transaction{" +
@@ -87,4 +102,6 @@ public class Transaction {
                 ", amount=" + amount +
                 '}';
     }
+
+
 }

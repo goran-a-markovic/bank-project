@@ -13,6 +13,10 @@ public interface TransactionDao {
 
     public Transaction getTransaction(ResultSet resultSet);
 
+    List<Transaction> getPendingTransactions(int actNumber);
+
+    void approveTransaction(int id, String decision);
+
     //
     //    @Override
     //    public Book getBookById(int id) {

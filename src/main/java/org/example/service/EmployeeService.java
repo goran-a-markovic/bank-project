@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.App;
 import org.example.dao.DaoFactory;
 import org.example.dao.UserDao;
 import org.example.entity.Customer;
@@ -36,7 +37,6 @@ public class EmployeeService {
     public static User getEmployeeByName(String name) {
         UserDao employeeDao = DaoFactory.getEmployeeDao();
         User employee = employeeDao.getUserByName(name);
-        System.out.println("Here is the employee you wanted: " + employee.toString());
         return employee;
     }
 
@@ -44,4 +44,7 @@ public class EmployeeService {
     public static void getAllEmployees() {
         System.out.println("You don't really need this method :D ");
     }
+
+
+
 }

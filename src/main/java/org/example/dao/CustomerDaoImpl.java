@@ -78,7 +78,6 @@ public class CustomerDaoImpl implements UserDao {
             int idData = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String password = resultSet.getString("password");
-            System.out.println("Usao");
             return new Customer(idData, name, password);
         } catch (SQLException e) {
             e.printStackTrace();
